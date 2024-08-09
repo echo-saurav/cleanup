@@ -8,6 +8,7 @@ services:
       - PORT=${PORT}
       - INTERVAL_MINUTE=${INTERVAL_MINUTE}
       - CRON_HOUR=${CRON_HOUR}
+      - DURATION_DAYS=${DURATION_DAYS}
     ports:
       - "8887:8888"
     volumes:
