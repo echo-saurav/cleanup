@@ -144,12 +144,12 @@ def init_background_job():
 
     # keep alive
     # Wait for the scheduler to run
-    try:
-        while scheduler.running:
-            time.sleep(1)
-    except KeyboardInterrupt:
-        shutdown_scheduler(None, None)
-
+    # try:
+    #     while scheduler.running:
+    #         time.sleep(1)
+    # except KeyboardInterrupt:
+    #     shutdown_scheduler(None, None)
+    #
 
 if __name__ == '__main__':
     init_background_job()
