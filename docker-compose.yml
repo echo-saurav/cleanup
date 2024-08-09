@@ -6,8 +6,14 @@ services:
       dockerfile: Dockerfile
     environment:
       - PORT=8888
+      - INTERVAL_MINUTE=1
+      - CRON_HOUR=10
     ports:
       - "8887:8888"
     volumes:
-      - ./data:/data
+      - ./media:/media
+      - ./media/tvshows:/media/tvshows
+      - ./media/movies:/media/movies
+
+
 
