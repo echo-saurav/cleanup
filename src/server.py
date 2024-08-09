@@ -50,7 +50,7 @@ def get_movies_size():
 
 
 @app.route('/get_size_tvshows', methods=["GET"])
-def get_movies_size():
+def get_tvshows_size():
     size = get_directory_size(TV_SHOWS_PATH)
     human_readable_size = convert_size(size)
     return {
