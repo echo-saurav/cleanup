@@ -1,5 +1,6 @@
 import os
 import time
+from datetime import datetime, timedelta
 import math
 import shutil
 from flask import Flask, Response
@@ -13,12 +14,15 @@ import signal
 static_dir = "../public"
 app = Flask(__name__, static_folder=static_dir)
 cors = CORS(app, origins="*")
+
+# env
 PORT = int(os.getenv(key='BACKEND_PORT', default=8888))
 ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/media")
 MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/media/movies")
 TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/media/tvshows")
 INTERVAL_MINUTE = int(os.getenv(key='INTERVAL_MINUTE', default=1))
 CRON_HOUR = int(os.getenv(key='CRON_HOUR', default=10))
+DURATION_DAYS = int(os.getenv(key='DURATION_DAYS', default=1))
 
 
 # requests___________________________________________________________
@@ -85,9 +89,60 @@ def put_log(data):
 
 
 # background job____________________________________________________
+def list_directories(path):
+    try:
+        # List all entries in the given path
+        entries = os.listdir(path)
+        # Filter out entries that are directories and get their full paths
+        directories = [os.path.join(path, entry) for entry in entries if os.path.isdir(os.path.join(path, entry))]
+        return directories
+    except FileNotFoundError:
+        return f"Path '{path}' does not exist."
+    except PermissionError:
+        return f"Permission denied for path '{path}'."
+
 
 def start_scan():
-    pass
+    scan_movies()
+
+
+def get_last_modification_time(path):
+    # Get the last modification time
+    mod_time = os.path.getmtime(path)
+    # Convert it to a readable format
+    # readable_time = time.ctime(mod_time)
+    # return readable_time
+    return mod_time
+
+
+def scan_movies():
+    directories = list_directories(MOVIES_PATH)
+    if isinstance(directories, list):
+        print(f"Directories in '{MOVIES_PATH}':")
+        for directory in directories:
+            print(f"{directory}: update: {get_last_modification_time(directory)}")
+
+        print("# Three month old dir:")
+        for directory in directories:
+            last_mod = get_last_modification_time(directory)
+            if is_older_than_duration_days(last_mod):
+                size = get_directory_size(directory)
+                human_readable_size = convert_size(size)
+                print(f"{directory}: update: {get_last_modification_time(directory)} : size: {human_readable_size}")
+
+    else:
+        print(directories)
+
+
+def is_older_than_duration_days(timestamp):
+    # Convert the timestamp to a datetime object
+    file_time = datetime.fromtimestamp(timestamp)
+    # Get the current time
+    current_time = datetime.now()
+    # Calculate the time three months ago
+    three_months_ago = current_time - timedelta(days=DURATION_DAYS)  # Approximate 3 months as 90 days
+    # Check if the file time is older than three months
+    return file_time < three_months_ago
 
 
 def get_whole_size(path):
@@ -150,6 +205,7 @@ def init_background_job():
     # except KeyboardInterrupt:
     #     shutdown_scheduler(None, None)
     #
+
 
 if __name__ == '__main__':
     init_background_job()
