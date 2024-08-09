@@ -5,15 +5,15 @@ services:
       context: .
       dockerfile: Dockerfile
     environment:
-      - PORT=8888
-      - INTERVAL_MINUTE=1
-      - CRON_HOUR=10
+      - PORT=${PORT}
+      - INTERVAL_MINUTE=${INTERVAL_MINUTE}
+      - CRON_HOUR=${CRON_HOUR}
     ports:
       - "8887:8888"
     volumes:
-      - ./media:/media
-      - ./media/tvshows:/media/tvshows
-      - ./media/movies:/media/movies
+      - ${ROOT_MEDIA_PATH}:/media
+      - ${MOVIES_PATH}:/media/tvshows
+      - ${TV_SHOWS_PATH}:/media/movies
 
 
 
