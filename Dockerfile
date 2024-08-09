@@ -14,4 +14,4 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Specify the command to run on container start
-CMD ["python", "app/src/server.py"]
+CMD ["python", "src/server.py"]
