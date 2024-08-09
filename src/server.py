@@ -13,35 +13,45 @@ import signal
 static_dir = "../public"
 app = Flask(__name__, static_folder=static_dir)
 cors = CORS(app, origins="*")
-PORT = os.getenv(key='BACKEND_PORT', default=8888)
+PORT = int(os.getenv(key='BACKEND_PORT', default=8888))
+ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/media")
+MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/media/movies")
+TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/media/tvshows")
+INTERVAL_MINUTE = int(os.getenv(key='INTERVAL_MINUTE', default=1))
+CRON_HOUR = int(os.getenv(key='CRON_HOUR', default=10))
 
 
 # requests___________________________________________________________
-@app.route('/home')
-def serve_index():
-    return send_from_directory(app.static_folder, 'index.html')
+
+# @app.route('/info', methods=["POST"])
+# def info():
+#     data = request.get_json()
+#     start_book_id = data.get("start_book_id", None)
+#     res = {}
+#     response = Response(response=res, status=200, mimetype="application/json")
+#     return response
 
 
-@app.route('/home/<path:path>')
-def send(path):
-    return send_from_directory(app.static_folder, path)
-
-
-@app.route('/info', methods=["POST"])
-def info():
-    data = request.get_json()
-
-    start_book_id = data.get("start_book_id", None)
-    res = {}
-    response = Response(response=res, status=200, mimetype="application/json")
-    return response
-
-
-@app.route('/get_size', methods=["GET"])
-def get_size():
+@app.route('/status', methods=["GET"])
+def status():
     print("status")
-    path = "/Users/sauravahmed/"
-    size = get_directory_size(path)
+    return {
+        "status": "running"
+    }
+
+
+@app.route('/get_size_movies', methods=["GET"])
+def get_movies_size():
+    size = get_directory_size(MOVIES_PATH)
+    human_readable_size = convert_size(size)
+    return {
+        "size": human_readable_size
+    }
+
+
+@app.route('/get_size_tvshows', methods=["GET"])
+def get_movies_size():
+    size = get_directory_size(TV_SHOWS_PATH)
     human_readable_size = convert_size(size)
     return {
         "size": human_readable_size
@@ -51,20 +61,22 @@ def get_size():
 @app.route('/get_whole_size', methods=["GET"])
 def get_whole_size_():
     print("status")
-    path = "/Users/sauravahmed/"
-    size = get_whole_size(path)
+    size = get_whole_size(ROOT_MEDIA_PATH)
     human_readable_size = convert_size(size.get("free"))
     return {
         "size": human_readable_size
     }
 
 
-@app.route('/status', methods=["GET"])
-def status():
-    print("status")
-    return {
-        "status": "running"
-    }
+# static pages____________________________________________________
+@app.route('/home')
+def serve_index():
+    return send_from_directory(app.static_folder, 'index.html')
+
+
+@app.route('/home/<path:path>')
+def send(path):
+    return send_from_directory(app.static_folder, path)
 
 
 # store data____________________________________________________
@@ -116,7 +128,7 @@ def init_background_job():
     # scheduler.add_job(start_scan, 'cron', hour=10, minute=0)
 
     # Schedule the minute_task to run every minute
-    scheduler.add_job(start_scan, 'interval', minutes=1)
+    scheduler.add_job(start_scan, 'interval', minutes=INTERVAL_MINUTE)
 
     # Start the scheduler
     scheduler.start()
@@ -140,4 +152,5 @@ def init_background_job():
 
 
 if __name__ == '__main__':
+    init_background_job()
     app.run(use_reloader=True, debug=True, host='0.0.0.0', port=PORT, threaded=True)
