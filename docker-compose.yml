@@ -1,0 +1,13 @@
+services:
+  cleanup:
+    container_name: cleanup
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      - PORT=8888
+    ports:
+      - "8888:8888"
+    volumes:
+      - ./data:/data
+

@@ -1,27 +1,16 @@
-import os
 import time
 import requests
+from apscheduler.schedulers.background import BackgroundScheduler
+import signal
+import os
 import math
 from datetime import datetime, timedelta
 
 path = '/Users/sauravahmed/Documents'
-base_url = "http://192.168.0.120:8096"
-token = "1f488d5077f94649ac823b815020db88"
 
 
-def jellyfin():
-    headers = {
-        'accept': 'application/json',
-        'Authorization': f'Mediabrowser Token="{token}"'
-    }
-    response = requests.get(f"{base_url}/Users", headers=headers)
-    # Print the response
-    print(response.status_code)
-    users = response.json()
-    if not users: return
-
-    for user in users:
-        print(f"id:{user.get('Id')} | username:{user.get('Name')}")
+def start_scan():
+    print("start scanning")
 
 
 def is_older_than_three_months(timestamp):
@@ -97,9 +86,46 @@ def old_init():
         print(directories)
 
 
+# Graceful shutdown function
+
+
+def init_background_job():
+    # Create an instance of BackgroundScheduler
+    scheduler = BackgroundScheduler()
+
+    # Schedule the daily_task to run every day at a specific time (e.g., 10:00 AM)
+    # scheduler.add_job(start_scan, 'cron', hour=10, minute=0)
+
+    # Schedule the minute_task to run every minute
+    scheduler.add_job(start_scan, 'interval', minutes=1)
+
+    # Start the scheduler
+    scheduler.start()
+
+    # graceful shutdown
+    def shutdown_scheduler(signum, frame):
+        print("Shutting down the scheduler...")
+        scheduler.shutdown()
+
+    # Register the signal handler for graceful shutdown
+    signal.signal(signal.SIGINT, shutdown_scheduler)
+    signal.signal(signal.SIGTERM, shutdown_scheduler)
+
+    # keep alive
+    # Wait for the scheduler to run
+    try:
+        while scheduler.running:
+            time.sleep(1)
+    except KeyboardInterrupt:
+        shutdown_scheduler(None, None)
+
+
 def init():
-    # jellyfin()
-    old_init()
+    init_background_job()
+    # periodic run
+    # check storage of dir
+    # get all old files
+    # delete old files
 
 
 init()
