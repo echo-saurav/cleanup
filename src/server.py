@@ -1,6 +1,7 @@
 import os
 import time
 from datetime import datetime, timedelta
+import json
 import math
 import shutil
 from flask import Flask, Response
@@ -17,12 +18,14 @@ cors = CORS(app, origins="*")
 
 # env
 PORT = int(os.getenv(key='BACKEND_PORT', default=8888))
-ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/media")
-MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/media/movies")
-TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/media/tvshows")
+DATA_PATH = os.getenv(key='DATA_PATH', default="../data")
+ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/Users/sauravahmed/Documents")
+MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/Users/sauravahmed/Documents")
+TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/Users/sauravahmed/Documents")
 INTERVAL_MINUTE = int(os.getenv(key='INTERVAL_MINUTE', default=1))
 CRON_HOUR = int(os.getenv(key='CRON_HOUR', default=10))
-DURATION_DAYS = int(os.getenv(key='DURATION_DAYS', default=1))
+DURATION_DAYS = int(os.getenv(key='DURATION_DAYS', default=30))
+DRY_RUN = os.getenv(key='DRY_RUN', default=True)
 
 
 # requests___________________________________________________________
@@ -84,8 +87,14 @@ def send(path):
 
 
 # store data____________________________________________________
-def put_log(data):
-    pass
+def put_data(data):
+    filename = f"{DATA_PATH}/files.json"
+    try:
+        with open(filename, 'w') as file:
+            json.dump(data, file, indent=4)
+        print(f"Data successfully written to {filename}")
+    except Exception as e:
+        print(f"An error occurred: {e}")
 
 
 # background job____________________________________________________
@@ -103,7 +112,8 @@ def list_directories(path):
 
 
 def start_scan():
-    scan_movies()
+    scan_dir(MOVIES_PATH)
+    scan_dir(TV_SHOWS_PATH)
 
 
 def get_last_modification_time(path):
@@ -115,21 +125,47 @@ def get_last_modification_time(path):
     return mod_time
 
 
-def scan_movies():
-    directories = list_directories(MOVIES_PATH)
+def scan_dir(dir_path):
+    directories = list_directories(dir_path)
     if isinstance(directories, list):
-        print(f"Directories in '{MOVIES_PATH}':")
+        print(f"Directories in '{dir_path}':")
+        dir_data = []
         for directory in directories:
+            last_mod = get_last_modification_time(directory)
+            size = get_directory_size(directory)
+            human_readable_size = convert_size(size)
+            readable_time = time.ctime(last_mod)
+
+            dir_data.append({
+                'dir': directory,
+                'readable_update_time': readable_time,
+                'update_time': last_mod,
+                'size': size,
+                'human_readable_size': human_readable_size
+            })
             print(f"{directory}: update: {get_last_modification_time(directory)}")
 
         print("# Three month old dir:")
+        deu_dir_data = []
         for directory in directories:
             last_mod = get_last_modification_time(directory)
             if is_older_than_duration_days(last_mod):
                 size = get_directory_size(directory)
                 human_readable_size = convert_size(size)
-                print(f"{directory}: update: {get_last_modification_time(directory)} : size: {human_readable_size}")
+                readable_time = time.ctime(last_mod)
 
+                # delete task
+                delete_directory(directory)
+                deu_dir_data.append({
+                    'dir': directory,
+                    'readable_update_time': readable_time,
+                    'update_time': last_mod,
+                    'size': size,
+                    'human_readable_size': human_readable_size
+                })
+                print(f"{directory}: update: {readable_time} : size: {human_readable_size}")
+
+        put_data({'all_dir': dir_data, 'deu_dir': deu_dir_data})
     else:
         print(directories)
 
@@ -175,7 +211,21 @@ def get_directory_size(path):
     return total_size
 
 
+def delete_directory(path):
+    try:
+        if DRY_RUN:
+            print(f"Delete dry run: {path}")
+        else:
+            # shutil.rmtree(path)
+            print(f"Directory '{path}' has been deleted successfully.")
+    except Exception as e:
+        print(f"An error occurred: {e}")
+
+
 def init_background_job():
+    print(f"INTERVAL_MINUTE: {INTERVAL_MINUTE}")
+    print(f"MOVIES_PATH: {MOVIES_PATH}")
+    print(f"DRY_RUN: {DRY_RUN}")
     # Create an instance of BackgroundScheduler
     scheduler = BackgroundScheduler()
 
@@ -189,13 +239,13 @@ def init_background_job():
     scheduler.start()
 
     # graceful shutdown
-    def shutdown_scheduler(signum, frame):
-        print("Shutting down the scheduler...")
-        scheduler.shutdown()
-
-    # Register the signal handler for graceful shutdown
-    signal.signal(signal.SIGINT, shutdown_scheduler)
-    signal.signal(signal.SIGTERM, shutdown_scheduler)
+    # def shutdown_scheduler(signum, frame):
+    #     print("Shutting down the scheduler...")
+    #     scheduler.shutdown()
+    #
+    # # Register the signal handler for graceful shutdown
+    # signal.signal(signal.SIGINT, shutdown_scheduler)
+    # signal.signal(signal.SIGTERM, shutdown_scheduler)
 
     # keep alive
     # Wait for the scheduler to run
