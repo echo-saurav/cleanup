@@ -9,8 +9,9 @@ services:
       - INTERVAL_MINUTE=${INTERVAL_MINUTE}
       - CRON_HOUR=${CRON_HOUR}
       - DURATION_DAYS=${DURATION_DAYS}
+      - DRY_RUN=${DRY_RUN}
     ports:
-      - "8888:8888"
+      - 8888:8888
     volumes:
       - ${ROOT_MEDIA_PATH}:/media
       - ${MOVIES_PATH}:/media/tvshows
