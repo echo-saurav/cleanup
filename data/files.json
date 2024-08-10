@@ -1,237 +1,244 @@
 {
-    "all_dir": [
-        {
-            "dir": "/Users/sauravahmed/Documents/untitled folder",
-            "readable_update_time": "Sun Jun  2 16:52:29 2024",
-            "update_time": 1717325549.1376424,
-            "size": 22227431,
-            "human_readable_size": "21.2 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/obsidian-tracker",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.7786286,
-            "size": 7314220,
-            "human_readable_size": "6.98 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Rainbell English",
-            "readable_update_time": "Tue May 14 10:50:46 2024",
-            "update_time": 1715662246.070168,
-            "size": 64206766,
-            "human_readable_size": "61.23 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/newfinal",
-            "readable_update_time": "Sat Jun  1 23:02:59 2024",
-            "update_time": 1717261379.1345253,
-            "size": 33779610,
-            "human_readable_size": "32.21 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/test",
-            "readable_update_time": "Sun May 26 13:46:48 2024",
-            "update_time": 1716709608.819618,
-            "size": 3651644,
-            "human_readable_size": "3.48 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Personal-Wiki",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.8469574,
-            "size": 33462390,
-            "human_readable_size": "31.91 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/AINotes",
-            "readable_update_time": "Fri Jan  5 12:02:46 2024",
-            "update_time": 1704434566.9881,
-            "size": 375930,
-            "human_readable_size": "367.12 KB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/TheQuran",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.807156,
-            "size": 59604291,
-            "human_readable_size": "56.84 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/ObsidianVaults",
-            "readable_update_time": "Wed Jul 10 02:57:02 2024",
-            "update_time": 1720558622.8324559,
-            "size": 175613817,
-            "human_readable_size": "167.48 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Books",
-            "readable_update_time": "Fri Jun 28 14:59:05 2024",
-            "update_time": 1719565145.6374297,
-            "size": 2418881025,
-            "human_readable_size": "2.25 GB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/KnowledgeBase",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.8247287,
-            "size": 63066974,
-            "human_readable_size": "60.15 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Notes",
-            "readable_update_time": "Sun Jun 16 03:37:44 2024",
-            "update_time": 1718487464.6657228,
-            "size": 153257105,
-            "human_readable_size": "146.16 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Playgrounds",
-            "readable_update_time": "Fri Dec  1 21:07:08 2023",
-            "update_time": 1701443228.0906014,
-            "size": 0,
-            "human_readable_size": "0B"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/LifeOS",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.8112674,
-            "size": 28927340,
-            "human_readable_size": "27.59 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/DashboardPlusPlus",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.8183587,
-            "size": 10624282,
-            "human_readable_size": "10.13 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/PersonalWiki",
-            "readable_update_time": "Sun Aug  4 15:23:39 2024",
-            "update_time": 1722763419.4833834,
-            "size": 104696397,
-            "human_readable_size": "99.85 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/3d home files",
-            "readable_update_time": "Mon Jul 17 16:49:03 2023",
-            "update_time": 1689590943.623619,
-            "size": 1303461,
-            "human_readable_size": "1.24 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/vector-plugin-obsidian",
-            "readable_update_time": "Mon Apr  1 22:32:39 2024",
-            "update_time": 1711989159.479567,
-            "size": 646766157,
-            "human_readable_size": "616.8 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/obsidian_dataview_example_vault",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.7488768,
-            "size": 20209889,
-            "human_readable_size": "19.27 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/The Quran Vault",
-            "readable_update_time": "Wed Mar 13 09:55:04 2024",
-            "update_time": 1710302104.0187297,
-            "size": 1573647,
-            "human_readable_size": "1.5 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/kepano-obsidian-main",
-            "readable_update_time": "Sat Jul 27 08:35:58 2024",
-            "update_time": 1722047758.8404224,
-            "size": 174609,
-            "human_readable_size": "170.52 KB"
-        }
-    ],
-    "deu_dir": [
-        {
-            "dir": "/Users/sauravahmed/Documents/untitled folder",
-            "readable_update_time": "Sun Jun  2 16:52:29 2024",
-            "update_time": 1717325549.1376424,
-            "size": 22227431,
-            "human_readable_size": "21.2 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Rainbell English",
-            "readable_update_time": "Tue May 14 10:50:46 2024",
-            "update_time": 1715662246.070168,
-            "size": 64206766,
-            "human_readable_size": "61.23 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/newfinal",
-            "readable_update_time": "Sat Jun  1 23:02:59 2024",
-            "update_time": 1717261379.1345253,
-            "size": 33779610,
-            "human_readable_size": "32.21 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/test",
-            "readable_update_time": "Sun May 26 13:46:48 2024",
-            "update_time": 1716709608.819618,
-            "size": 3651644,
-            "human_readable_size": "3.48 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/AINotes",
-            "readable_update_time": "Fri Jan  5 12:02:46 2024",
-            "update_time": 1704434566.9881,
-            "size": 375930,
-            "human_readable_size": "367.12 KB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/ObsidianVaults",
-            "readable_update_time": "Wed Jul 10 02:57:02 2024",
-            "update_time": 1720558622.8324559,
-            "size": 175613817,
-            "human_readable_size": "167.48 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Books",
-            "readable_update_time": "Fri Jun 28 14:59:05 2024",
-            "update_time": 1719565145.6374297,
-            "size": 2418881025,
-            "human_readable_size": "2.25 GB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Notes",
-            "readable_update_time": "Sun Jun 16 03:37:44 2024",
-            "update_time": 1718487464.6657228,
-            "size": 153257105,
-            "human_readable_size": "146.16 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/Playgrounds",
-            "readable_update_time": "Fri Dec  1 21:07:08 2023",
-            "update_time": 1701443228.0906014,
-            "size": 0,
-            "human_readable_size": "0B"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/3d home files",
-            "readable_update_time": "Mon Jul 17 16:49:03 2023",
-            "update_time": 1689590943.623619,
-            "size": 1303461,
-            "human_readable_size": "1.24 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/vector-plugin-obsidian",
-            "readable_update_time": "Mon Apr  1 22:32:39 2024",
-            "update_time": 1711989159.479567,
-            "size": 646766157,
-            "human_readable_size": "616.8 MB"
-        },
-        {
-            "dir": "/Users/sauravahmed/Documents/The Quran Vault",
-            "readable_update_time": "Wed Mar 13 09:55:04 2024",
-            "update_time": 1710302104.0187297,
-            "size": 1573647,
-            "human_readable_size": "1.5 MB"
-        }
-    ]
+  "all_dir": [
+    {
+      "dir": "/Users/sauravahmed/Documents/untitled folder",
+      "readable_update_time": "Sun Jun  2 16:52:29 2024",
+      "update_time": 1717325549.1376424,
+      "size": 22227431,
+      "human_readable_size": "21.2 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/obsidian-tracker",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.7786286,
+      "size": 7314220,
+      "human_readable_size": "6.98 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Rainbell English",
+      "readable_update_time": "Tue May 14 10:50:46 2024",
+      "update_time": 1715662246.070168,
+      "size": 64206766,
+      "human_readable_size": "61.23 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/newfinal",
+      "readable_update_time": "Sat Jun  1 23:02:59 2024",
+      "update_time": 1717261379.1345253,
+      "size": 33779610,
+      "human_readable_size": "32.21 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/test",
+      "readable_update_time": "Sun May 26 13:46:48 2024",
+      "update_time": 1716709608.819618,
+      "size": 3651644,
+      "human_readable_size": "3.48 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Personal-Wiki",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.8469574,
+      "size": 33462390,
+      "human_readable_size": "31.91 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/AINotes",
+      "readable_update_time": "Fri Jan  5 12:02:46 2024",
+      "update_time": 1704434566.9881,
+      "size": 375930,
+      "human_readable_size": "367.12 KB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/TheQuran",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.807156,
+      "size": 59604291,
+      "human_readable_size": "56.84 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/ObsidianVaults",
+      "readable_update_time": "Wed Jul 10 02:57:02 2024",
+      "update_time": 1720558622.8324559,
+      "size": 175613817,
+      "human_readable_size": "167.48 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Books",
+      "readable_update_time": "Fri Jun 28 14:59:05 2024",
+      "update_time": 1719565145.6374297,
+      "size": 2418881025,
+      "human_readable_size": "2.25 GB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/KnowledgeBase",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.8247287,
+      "size": 63066974,
+      "human_readable_size": "60.15 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Notes",
+      "readable_update_time": "Sun Jun 16 03:37:44 2024",
+      "update_time": 1718487464.6657228,
+      "size": 153257105,
+      "human_readable_size": "146.16 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Playgrounds",
+      "readable_update_time": "Fri Dec  1 21:07:08 2023",
+      "update_time": 1701443228.0906014,
+      "size": 0,
+      "human_readable_size": "0B"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/LifeOS",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.8112674,
+      "size": 28927340,
+      "human_readable_size": "27.59 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/DashboardPlusPlus",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.8183587,
+      "size": 10624282,
+      "human_readable_size": "10.13 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/PersonalWiki",
+      "readable_update_time": "Sun Aug  4 15:23:39 2024",
+      "update_time": 1722763419.4833834,
+      "size": 104696397,
+      "human_readable_size": "99.85 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/3d home files",
+      "readable_update_time": "Mon Jul 17 16:49:03 2023",
+      "update_time": 1689590943.623619,
+      "size": 1303461,
+      "human_readable_size": "1.24 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/vector-plugin-obsidian",
+      "readable_update_time": "Mon Apr  1 22:32:39 2024",
+      "update_time": 1711989159.479567,
+      "size": 646766157,
+      "human_readable_size": "616.8 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/obsidian_dataview_example_vault",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.7488768,
+      "size": 20209889,
+      "human_readable_size": "19.27 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/The Quran Vault",
+      "readable_update_time": "Wed Mar 13 09:55:04 2024",
+      "update_time": 1710302104.0187297,
+      "size": 1573647,
+      "human_readable_size": "1.5 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/kepano-obsidian-main",
+      "readable_update_time": "Sat Jul 27 08:35:58 2024",
+      "update_time": 1722047758.8404224,
+      "size": 174609,
+      "human_readable_size": "170.52 KB"
+    }
+  ],
+  "deu_dir": [
+    {
+      "dir": "/Users/sauravahmed/Documents/untitled folder",
+      "readable_update_time": "Sun Jun  2 16:52:29 2024",
+      "update_time": 1717325549.1376424,
+      "size": 22227431,
+      "human_readable_size": "21.2 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Rainbell English",
+      "readable_update_time": "Tue May 14 10:50:46 2024",
+      "update_time": 1715662246.070168,
+      "size": 64206766,
+      "human_readable_size": "61.23 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/newfinal",
+      "readable_update_time": "Sat Jun  1 23:02:59 2024",
+      "update_time": 1717261379.1345253,
+      "size": 33779610,
+      "human_readable_size": "32.21 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/test",
+      "readable_update_time": "Sun May 26 13:46:48 2024",
+      "update_time": 1716709608.819618,
+      "size": 3651644,
+      "human_readable_size": "3.48 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/AINotes",
+      "readable_update_time": "Fri Jan  5 12:02:46 2024",
+      "update_time": 1704434566.9881,
+      "size": 375930,
+      "human_readable_size": "367.12 KB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/ObsidianVaults",
+      "readable_update_time": "Wed Jul 10 02:57:02 2024",
+      "update_time": 1720558622.8324559,
+      "size": 175613817,
+      "human_readable_size": "167.48 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Books",
+      "readable_update_time": "Fri Jun 28 14:59:05 2024",
+      "update_time": 1719565145.6374297,
+      "size": 2418881025,
+      "human_readable_size": "2.25 GB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Notes",
+      "readable_update_time": "Sun Jun 16 03:37:44 2024",
+      "update_time": 1718487464.6657228,
+      "size": 153257105,
+      "human_readable_size": "146.16 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/Playgrounds",
+      "readable_update_time": "Fri Dec  1 21:07:08 2023",
+      "update_time": 1701443228.0906014,
+      "size": 0,
+      "human_readable_size": "0B"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/3d home files",
+      "readable_update_time": "Mon Jul 17 16:49:03 2023",
+      "update_time": 1689590943.623619,
+      "size": 1303461,
+      "human_readable_size": "1.24 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/vector-plugin-obsidian",
+      "readable_update_time": "Mon Apr  1 22:32:39 2024",
+      "update_time": 1711989159.479567,
+      "size": 646766157,
+      "human_readable_size": "616.8 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/The Quran Vault",
+      "readable_update_time": "Wed Mar 13 09:55:04 2024",
+      "update_time": 1710302104.0187297,
+      "size": 1573647,
+      "human_readable_size": "1.5 MB"
+    },
+    {
+      "dir": "/Users/sauravahmed/Documents/The Quran Vault",
+      "readable_update_time": "Wed Mar 13 09:55:04 2024",
+      "update_time": 1710302104.0187297,
+      "size": 1573647,
+      "human_readable_size": "1.5 MB"
+    }
+  ]
 }
