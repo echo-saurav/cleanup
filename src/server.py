@@ -19,6 +19,7 @@ cors = CORS(app, origins="*")
 # env
 PORT = int(os.getenv(key='BACKEND_PORT', default=8888))
 DATA_PATH = os.getenv(key='DATA_PATH', default="../data")
+DATA_FILE = f"{DATA_PATH}/data.json"
 ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/Users/sauravahmed/Documents")
 MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/Users/sauravahmed/Documents")
 TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/Users/sauravahmed/Documents")
@@ -45,6 +46,51 @@ def status():
     return {
         "status": "running"
     }
+
+
+@app.route('/api/dirs', methods=["GET"])
+def get_dirs():
+    print("get dirs")
+    try:
+        with open(DATA_FILE, 'r') as file:
+            content = file.read()
+            content = json.loads(content)
+            dirs = content.get("dirs")
+            return {"dirs": dirs}
+    except Exception as e:
+        print(e)
+        return {"dirs": []}
+
+
+@app.route('/api/dirs', methods=["POST"])
+def save_dirs():
+    print("set dirs")
+    data = request.get_json()
+    dirs = data.get('dirs', [])
+
+    if not len(dirs) > 0:
+        print('failed')
+        return {"success": False}
+
+    try:
+        with open(DATA_FILE, 'w+') as file:
+            content = file.read()
+            if content:
+                print('pre')
+                content = json.loads(content)
+                content['dirs'] = dirs
+                file.write(content)
+                return {"success": True}
+            else:
+                print('nothing on it')
+                content = {"dirs": dirs}
+                file.write(json.dumps(content))
+                return {"success": True}
+    except Exception as e:
+        print(e)
+        return {"success": False}
+
+
 
 
 @app.route('/get_size_movies', methods=["GET"])
