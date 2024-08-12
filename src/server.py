@@ -27,19 +27,11 @@ INTERVAL_MINUTE = int(os.getenv(key='INTERVAL_MINUTE', default=1))
 CRON_HOUR = int(os.getenv(key='CRON_HOUR', default=10))
 DURATION_DAYS = int(os.getenv(key='DURATION_DAYS', default=30))
 DRY_RUN = os.getenv(key='DRY_RUN', default=True)
+DIR_LIST_ENV = os.getenv(key='DIR_LIST', default="")
+DIR_LIST = DIR_LIST_ENV.split(",")
 
 
 # requests___________________________________________________________
-
-# @app.route('/info', methods=["POST"])
-# def info():
-#     data = request.get_json()
-#     start_book_id = data.get("start_book_id", None)
-#     res = {}
-#     response = Response(response=res, status=200, mimetype="application/json")
-#     return response
-
-
 @app.route('/status', methods=["GET"])
 def status():
     print("status")
@@ -48,17 +40,23 @@ def status():
     }
 
 
+@app.route('/api/data', methods=["GET"])
+def get_data():
+    print("get data")
+    data = get_all_data_content()
+    if data:
+        return data
+    else:
+        return {}
+
+
 @app.route('/api/dirs', methods=["GET"])
 def get_dirs():
     print("get dirs")
-    try:
-        with open(DATA_FILE, 'r') as file:
-            content = file.read()
-            content = json.loads(content)
-            dirs = content.get("dirs")
-            return {"dirs": dirs}
-    except Exception as e:
-        print(e)
+    dirs = get_data_value_content('dirs')
+    if dirs:
+        return {"dirs": dirs}
+    else:
         return {"dirs": []}
 
 
@@ -68,29 +66,49 @@ def save_dirs():
     data = request.get_json()
     dirs = data.get('dirs', [])
 
-    if not len(dirs) > 0:
-        print('failed')
-        return {"success": False}
-
-    try:
-        with open(DATA_FILE, 'w+') as file:
-            content = file.read()
-            if content:
-                print('pre')
-                content = json.loads(content)
-                content['dirs'] = dirs
-                file.write(content)
-                return {"success": True}
-            else:
-                print('nothing on it')
-                content = {"dirs": dirs}
-                file.write(json.dumps(content))
-                return {"success": True}
-    except Exception as e:
-        print(e)
-        return {"success": False}
+    res = save_data_content("dirs", dirs)
+    return {"success": res}
 
 
+# interval time
+@app.route('/api/interval', methods=["GET"])
+def get_interval():
+    print("get interval")
+    interval = get_data_value_content('interval')
+    if interval:
+        return {"interval": interval}
+    else:
+        return {"interval": -1}
+
+
+@app.route('/api/interval', methods=["POST"])
+def save_interval():
+    print("set interval")
+    data = request.get_json()
+    interval = data.get('interval', -1)
+
+    res = save_data_content("interval", interval)
+    return {"success": res}
+
+
+@app.route('/api/dryrun', methods=["GET"])
+def is_dryrun():
+    print("is_dryrun")
+    dryrun = get_data_value_content('dryrun')
+    if dryrun:
+        return {"dryrun": dryrun}
+    else:
+        return {"dryrun": False}
+
+
+@app.route('/api/dryrun', methods=["POST"])
+def save_dryrun():
+    print("save_dryrun")
+    data = request.get_json()
+    dryrun = data.get('dryrun', False)
+
+    res = save_data_content("dryrun", dryrun)
+    return {"success": res}
 
 
 @app.route('/get_size_movies', methods=["GET"])
@@ -133,7 +151,7 @@ def send(path):
 
 
 # store data____________________________________________________
-def put_data(data):
+def put_filelist(data):
     filename = f"{DATA_PATH}/files.json"
     try:
         with open(filename, 'w') as file:
@@ -141,6 +159,42 @@ def put_data(data):
         print(f"Data successfully written to {filename}")
     except Exception as e:
         print(f"An error occurred: {e}")
+
+
+def get_all_data_content():
+    try:
+        with open(DATA_FILE, 'r') as file:
+            content = file.read()
+            content = json.loads(content)
+            return content
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
+
+
+def get_data_value_content(key):
+    content = get_all_data_content()
+    if content and content.get(key):
+        return content.get(key)
+    else:
+        return None
+
+
+def save_data_content(key, value):
+    content = get_all_data_content()
+    print(f"key: {key}, content: {content}")
+    if not content:
+        content = {}
+
+    content[key] = value
+    print(f"updated content: {content}")
+    try:
+        with open(DATA_FILE, 'w') as file:
+            file.write(json.dumps(content))
+            return True
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return None
 
 
 # background job____________________________________________________
@@ -211,7 +265,7 @@ def scan_dir(dir_path):
                 })
                 print(f"{directory}: update: {readable_time} : size: {human_readable_size}")
 
-        put_data({'all_dir': dir_data, 'deu_dir': deu_dir_data})
+        put_filelist({'all_dir': dir_data, 'deu_dir': deu_dir_data})
     else:
         print(directories)
 
@@ -303,6 +357,12 @@ def init_background_job():
     #
 
 
+# def init_data():
+#     with open(DATA_FILE,'w+') as file:
+#         content = file.read()
+#         if content:
+#
+
 if __name__ == '__main__':
-    init_background_job()
+    # init_background_job()
     app.run(use_reloader=True, debug=True, host='0.0.0.0', port=PORT, threaded=True)

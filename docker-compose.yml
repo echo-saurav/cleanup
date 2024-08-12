@@ -10,6 +10,7 @@ services:
       - CRON_HOUR=${CRON_HOUR}
       - DURATION_DAYS=${DURATION_DAYS}
       - DRY_RUN=${DRY_RUN}
+      - DIR_LIST=
     ports:
       - "8887:8888"
     volumes:

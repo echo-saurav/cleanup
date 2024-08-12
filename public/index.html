@@ -1,13 +1,136 @@
 <!doctype html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+        content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Storage</title>
 </head>
+
 <body>
-<h1>Hello</h1>
+    <h1>Cleanup</h1>
+    <div id="list-container">
+        <h2>Path list</h2>
+        <div>
+            <input type="text" id="new-path"/>
+            <button onclick="addPathButton()">Add path</button>
+        </div>
+        <ul id="items-list">
+            <!-- List items will be populated here -->
+        </ul>
+    </div>
+    <script>
+        url = "/api/data"
+        dirs_url = "/api/dirs"
+        pathList = []
+
+        function addPathButton(){
+            const inputEl = document.getElementById('new-path');
+            inputVal = inputEl.value
+            if(!inputVal){return}
+            pathList=[...pathList,inputVal]
+            inputEl.value = ""
+            console.log(`add new path: ${inputVal}`)
+            
+            updateDirInBackend(pathList)
+        }
+
+        function deletePath(index) {
+            console.log(`delete index: ${index}`)
+            
+            pathList.splice(index,1);
+            updateDirInBackend(pathList)
+
+        }
+
+
+        function updateDirInBackend(dirs){
+            requestBody={
+                "dirs":dirs
+            }
+            fetch(dirs_url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json', 
+                },
+                body: JSON.stringify(requestBody) 
+            }).then(res => {
+                updateView()
+
+            }).catch(error => {
+                console.error('Error:', error);
+                document.getElementById('items-list').textContent = 'Failed to load items.';
+            });
+
+        }
+
+        function getPathListItem(data,index) {
+            const listItem = document.createElement('div');
+            listItem.classList = 'item'
+            const listItemTextContext = document.createElement('div');
+            listItemTextContext.classList = "item-text"
+
+            const listItemTitle = document.createElement('h3');
+            // const listItemSubtext = document.createElement('p');
+            const listItemRemoveButton = document.createElement('button');
+            listItemRemoveButton.classList = 'remove-button'
+
+            listItemTitle.textContent = data
+            // listItemSubtext.textContent = "subtitle thing"
+            listItemRemoveButton.textContent = "remove"
+            listItemRemoveButton.onclick=()=>{
+                deletePath(index)
+            }
+
+
+            listItemTextContext.appendChild(listItemTitle)
+            // listItemTextContext.appendChild(listItemSubtext)
+            listItem.appendChild(listItemTextContext)
+            listItem.appendChild(listItemRemoveButton)
+
+            return listItem
+        }
+
+        function updatePathList() {
+            fetch(url).then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            }).then(res => {
+                const data = res.dirs
+                pathList = data
+                updateView()
+
+            }).catch(error => {
+                console.error('Error:', error);
+                document.getElementById('items-list').textContent = 'Failed to load items.';
+            });
+        }
+
+        function updateView() {
+
+            // update path list
+            const listContainer = document.getElementById('items-list');
+            listContainer.innerHTML = ''; // Clear any existing content
+
+            if (Array.isArray(pathList)) {
+                pathList.forEach((item,index) => {
+                    const listItem = getPathListItem(item,index)
+                    listContainer.appendChild(listItem);
+                });
+            } else {
+                listContainer.textContent = 'No items found.';
+            }
+
+        }
+
+        // Call the function to populate the list on page load
+        // window.onload = populateList;
+        window.onload = updatePathList
+    </script>
 </body>
+
 </html>
