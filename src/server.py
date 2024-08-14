@@ -390,9 +390,9 @@ def delete_directory(path, last_mod, human_readable_size):
 def append_logs(path, last_mod, human_readable_size, dry_run):
     current_time = datetime.now()
     if dry_run:
-        content = f"{current_time}: DRY RUN : {path}: {last_mod}: {human_readable_size}"
+        content = f"{current_time}: DRY RUN : {path}: {last_mod}: {human_readable_size}\n"
     else:
-        content = f"{current_time}: {path}: {last_mod}: {human_readable_size}"
+        content = f"{current_time}: {path}: {last_mod}: {human_readable_size}\n"
     with open(DATA_LOG, 'a') as file:
         file.write(content)
 
