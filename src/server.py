@@ -308,24 +308,29 @@ def scan_dir(dir_path, size_limit_):
     append_event_logs(f"SCAN:{dir_path} size limit: {size_limit_}")
     append_event_logs(f"SCAN:{dir_path} size exceed: {size_exceed}")
 
-    # delete if time limit exceed
-
+    # delete if time limit exceed , no need to worry about DELETE_ON_SIZE_LIMIT and FORCE_DELETE_ON_SIZE_LIMIT
+    if DELETE_ON_TIME_LIMIT:
+        append_event_logs(f"DELETE_ON_TIME_LIMIT:start scanning:{dir_path}")
+        delete_files_older_then_duration(directories)
+        return
 
     # do nothing if DELETE_ON_SIZE_LIMIT is false
     if size_exceed and not DELETE_ON_SIZE_LIMIT:
         return
-    # delete files that older than duration if DELETE_ON_SIZE_LIMIT is true
-    delete_dirs = []
-    if size_exceed and DELETE_ON_SIZE_LIMIT:
-        append_event_logs(f"SIZE_EXCEED:start scanning:{dir_path}")
-        delete_dirs = delete_files_older_then_duration(directories)
 
-    # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
+    # delete files that older than duration if DELETE_ON_SIZE_LIMIT is true
+    if size_exceed and DELETE_ON_SIZE_LIMIT:
+        append_event_logs(f"DELETE_ON_SIZE_LIMIT:start scanning:{dir_path}")
+        delete_files_older_then_duration(directories)
+        return
+
+        # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
     # delete oldest files if size exceeds even if time duration did not exceed
-    if len(delete_dirs) == 0 and FORCE_DELETE_ON_SIZE_LIMIT and size_exceed:
-        append_event_logs(f"SIZE_EXCEED_BUT_NOT_TIME_LIMIT:start scanning:{dir_path}")
-        append_event_logs(f"START_FORCE_DELETE:start scanning:{dir_path}")
+    if FORCE_DELETE_ON_SIZE_LIMIT and size_exceed:
+        append_event_logs(f"FORCE_DELETE_ON_SIZE_LIMIT:start scanning:{dir_path}")
+        append_event_logs(f"FORCE_DELETE_ON_SIZE_LIMIT:start scanning:{dir_path}")
         force_delete_on_size_limit(dir_path, directories, size_limit)
+        return
 
 
 def is_older_than_duration_days(timestamp):
