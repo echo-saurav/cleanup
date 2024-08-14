@@ -24,7 +24,6 @@ cors = CORS(app, origins="*")
 PORT = int(os.getenv(key='BACKEND_PORT', default=8888))
 DATA_PATH = os.getenv(key='DATA_PATH', default="../data")
 DATA_FILE = f"{DATA_PATH}/data.json"
-DATA_LOG = f"{DATA_PATH}/delete.log"
 ROOT_MEDIA_PATH = os.getenv(key='ROOT_MEDIA_PATH', default="/Users/sauravahmed/Documents")
 MOVIES_PATH = os.getenv(key='MEDIA_PATH', default="/Users/sauravahmed/Documents")
 TV_SHOWS_PATH = os.getenv(key='TV_SHOWS_PATH', default="/Users/sauravahmed/Documents")
@@ -274,7 +273,7 @@ def force_delete_on_size_limit(parent_dir_path, directories_, size_limit):
     print(f"delete_list: {delete_list}")
 
     for i in delete_list:
-        delete_directory(i.get("path"), i.get("last_mod"), i.get("readable_size"))
+        delete_directory(i.get("path"), i.get("last_mod"), i.get("readable_size"), "FORCE_DELETE_ON_SIZE_LIMIT")
 
 
 def delete_files_older_then_duration(directories):
@@ -287,7 +286,7 @@ def delete_files_older_then_duration(directories):
             human_readable_size = convert_bytes_to_readable_size(size)
             readable_time = time.ctime(last_mod)
 
-            delete_directory(directory, last_mod, human_readable_size)
+            delete_directory(directory, last_mod, human_readable_size, "DELETE_ON_SIZE_LIMIT")
             deleted_dirs.append(directory)
             print(f"{directory}: update: {readable_time} : size: {human_readable_size}")
     return deleted_dirs
@@ -301,7 +300,6 @@ def scan_dir(dir_path, size_limit_):
 
     directories_size = get_directory_size(dir_path)
     size_limit = convert_readable_to_bytes_size(size_limit_)
-    print(f"{size_limit_}")
     size_exceed = directories_size > size_limit
 
     # do nothing if DELETE_ON_SIZE_LIMIT is false
@@ -312,7 +310,7 @@ def scan_dir(dir_path, size_limit_):
     if size_exceed and DELETE_ON_SIZE_LIMIT:
         delete_dirs = delete_files_older_then_duration(directories)
 
-    # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older thrn duration limit
+    # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
     # delete oldest files if size exceeds even if time duration did not exceed
     if len(delete_dirs) == 0 and FORCE_DELETE_ON_SIZE_LIMIT:
         force_delete_on_size_limit(dir_path, directories, size_limit)
@@ -355,7 +353,7 @@ def convert_readable_to_bytes_size(readable_size):
 
 
 def convert_bytes_to_readable_size(size_bytes):
-    if size_bytes == 0:
+    if size_bytes <= 0:
         return "0B"
     size_name = ("B", "KB", "MB", "GB", "TB", "PB")
     i = int(math.floor(math.log(size_bytes, 1024)))  # Determine the size name index
@@ -375,25 +373,26 @@ def get_directory_size(path):
     return total_size
 
 
-def delete_directory(path, last_mod, human_readable_size):
+def delete_directory(path, last_mod, human_readable_size, mode):
     try:
         if DRY_RUN:
             print(f"Delete dry run: {path}")
         else:
             # shutil.rmtree(path)
             print(f"Directory '{path}' has been deleted successfully.")
-        append_logs(path, last_mod, human_readable_size, DRY_RUN)
+        append_logs(path, last_mod, human_readable_size, DRY_RUN, mode)
     except Exception as e:
         print(f"An error occurred: {e}")
 
 
-def append_logs(path, last_mod, human_readable_size, dry_run):
+def append_logs(path, last_mod, human_readable_size, dry_run, mode):
     current_time = datetime.now()
+    log_file_path = f"{DATA_PATH}/{time.time()}.log"
     if dry_run:
-        content = f"{current_time}: DRY RUN : {path}: {last_mod}: {human_readable_size}\n"
+        content = f"{current_time}:{mode}: DRY RUN : {path}: {last_mod}: {human_readable_size}\n"
     else:
-        content = f"{current_time}: {path}: {last_mod}: {human_readable_size}\n"
-    with open(DATA_LOG, 'a') as file:
+        content = f"{current_time}:{mode}: {path}: {last_mod}: {human_readable_size}\n"
+    with open(log_file_path, 'a') as file:
         file.write(content)
 
 
@@ -410,8 +409,10 @@ def start_scan():
     for index, path in enumerate(DIR_LIST.split(",")):
         if os.path.isdir(path):
             size_limit = get_size_limit(index)
+            print("_" * 20)
             print(f"scanning path: {path}, size limit: {size_limit}")
             scan_dir(path, size_limit)
+            print("_" * 20)
         else:
             print(f"invalid path: {path}")
     print("END SCAN")
@@ -427,7 +428,7 @@ def init_background_job():
     print(f"ROOT_MEDIA_PATH: {MOVIES_PATH}")
     print(f"DIR_LIST: {DIR_LIST}")
     print(f"DRY_RUN: {DRY_RUN}")
-    print("_"*10)
+    print("_" * 10)
     # Create an instance of BackgroundScheduler
     scheduler = BackgroundScheduler()
 
