@@ -260,6 +260,8 @@ def force_delete_on_size_limit(parent_dir_path, directories_, size_limit):
     print(f"size_limit:{convert_bytes_to_readable_size(size_limit)}")
     print(f"dir_size:{convert_bytes_to_readable_size(dir_size)}")
     print(f"diff_size:{convert_bytes_to_readable_size(diff_size)}")
+    append_event_logs(
+        f"FORCE_DELETE:size_limit:{convert_bytes_to_readable_size(size_limit)}:dir_size:{convert_bytes_to_readable_size(dir_size)}diff_size:{convert_bytes_to_readable_size(diff_size)}")
 
     count_size = 0
     for item in sorted_list:
@@ -308,11 +310,14 @@ def scan_dir(dir_path, size_limit_):
     # delete files that older than duration if DELETE_ON_SIZE_LIMIT is true
     delete_dirs = []
     if size_exceed and DELETE_ON_SIZE_LIMIT:
+        append_event_logs(f"SIZE_EXCEED:start scanning:{dir_path}")
         delete_dirs = delete_files_older_then_duration(directories)
 
     # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
     # delete oldest files if size exceeds even if time duration did not exceed
     if len(delete_dirs) == 0 and FORCE_DELETE_ON_SIZE_LIMIT:
+        append_event_logs(f"SIZE_EXCEED_BUT_NOT_TIME_LIMIT:start scanning:{dir_path}")
+        append_event_logs(f"START_FORCE_DELETE:start scanning:{dir_path}")
         force_delete_on_size_limit(dir_path, directories, size_limit)
 
 
@@ -380,18 +385,37 @@ def delete_directory(path, last_mod, human_readable_size, mode):
         else:
             # shutil.rmtree(path)
             print(f"Directory '{path}' has been deleted successfully.")
-        append_logs(path, last_mod, human_readable_size, DRY_RUN, mode)
+        append_delete_logs(path, last_mod, human_readable_size, DRY_RUN, mode)
     except Exception as e:
         print(f"An error occurred: {e}")
 
 
-def append_logs(path, last_mod, human_readable_size, dry_run, mode):
-    current_time = datetime.now()
-    log_file_path = f"{DATA_PATH}/{time.time()}.log"
+def get_current_date_human_readable(include_hour=False):
+    now = datetime.now()
+    if include_hour:
+        formatted_date_time = now.strftime("%d %B %Y %I:%M %p")
+        return formatted_date_time
+    else:
+        formatted_date = now.strftime("%d %B %Y")
+        formatted_date_time = now.strftime("%d %B %Y %I:%M %p")
+        return formatted_date
+
+
+def append_delete_logs(path, last_mod, human_readable_size, dry_run, mode):
+    current_time = get_current_date_human_readable(True)
+    log_file_path = f"{DATA_PATH}/{get_current_date_human_readable()}.log"
     if dry_run:
         content = f"{current_time}:{mode}: DRY RUN : {path}: {last_mod}: {human_readable_size}\n"
     else:
         content = f"{current_time}:{mode}: {path}: {last_mod}: {human_readable_size}\n"
+    with open(log_file_path, 'a') as file:
+        file.write(content)
+
+
+def append_event_logs(event):
+    current_time = get_current_date_human_readable(True)
+    log_file_path = f"{DATA_PATH}/{get_current_date_human_readable()}.log"
+    content = f"{current_time}:EVENT:{event}\n"
     with open(log_file_path, 'a') as file:
         file.write(content)
 
@@ -411,6 +435,7 @@ def start_scan():
             size_limit = get_size_limit(index)
             print("_" * 20)
             print(f"scanning path: {path}, size limit: {size_limit}")
+            append_event_logs(f"START_SCAN: scanning path: {path}, size limit: {size_limit}")
             scan_dir(path, size_limit)
             print("_" * 20)
         else:
