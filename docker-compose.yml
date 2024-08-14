@@ -10,7 +10,10 @@ services:
       - CRON_HOUR=${CRON_HOUR}
       - DURATION_DAYS=${DURATION_DAYS}
       - DRY_RUN=${DRY_RUN}
-      - DIR_LIST=
+      - DIR_LIST=${DIR_LIST}
+      - SIZE_LIMIT=${SIZE_LIMIT}
+      - DELETE_ON_SIZE_LIMIT=${DELETE_ON_SIZE_LIMIT}
+      - FORCE_DELETE_ON_SIZE_LIMIT=${FORCE_DELETE_ON_SIZE_LIMIT}
     ports:
       - "8887:8888"
     volumes:
