@@ -303,6 +303,9 @@ def scan_dir(dir_path, size_limit_):
     directories_size = get_directory_size(dir_path)
     size_limit = convert_readable_to_bytes_size(size_limit_)
     size_exceed = directories_size > size_limit
+    append_event_logs(f"SCAN:{dir_path} size: {convert_bytes_to_readable_size(directories_size)}")
+    append_event_logs(f"SCAN:{dir_path} size limit: {size_limit_}")
+    append_event_logs(f"SCAN:{dir_path} size exceed: {size_exceed}")
 
     # do nothing if DELETE_ON_SIZE_LIMIT is false
     if size_exceed and not DELETE_ON_SIZE_LIMIT:
