@@ -318,7 +318,7 @@ def scan_dir(dir_path, size_limit_):
 
     # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
     # delete oldest files if size exceeds even if time duration did not exceed
-    if len(delete_dirs) == 0 and FORCE_DELETE_ON_SIZE_LIMIT:
+    if len(delete_dirs) == 0 and FORCE_DELETE_ON_SIZE_LIMIT and size_exceed:
         append_event_logs(f"SIZE_EXCEED_BUT_NOT_TIME_LIMIT:start scanning:{dir_path}")
         append_event_logs(f"START_FORCE_DELETE:start scanning:{dir_path}")
         force_delete_on_size_limit(dir_path, directories, size_limit)
