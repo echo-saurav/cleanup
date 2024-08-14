@@ -22,6 +22,8 @@ services:
       - ${MOVIES_PATH}:/media/tvshows
       - ${TV_SHOWS_PATH}:/media/movies
       - ./data:/app/data
+      - /etc/localtime:/etc/localtime:ro
+
 
 
 

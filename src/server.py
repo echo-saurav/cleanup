@@ -442,6 +442,7 @@ def get_size_limit(index):
 
 def start_scan():
     print("START SCAN")
+    append_event_logs("START_BACKGROUND_JOB")
     for index, path in enumerate(DIR_LIST.split(",")):
         if os.path.isdir(path):
             size_limit = get_size_limit(index)
@@ -507,4 +508,5 @@ def init_background_job():
 
 if __name__ == '__main__':
     init_background_job()
+    append_event_logs("START_BACKGROUND_JOB")
     app.run(use_reloader=False, debug=True, host='0.0.0.0', port=PORT, threaded=True)
