@@ -37,11 +37,24 @@ DELETE_ON_TIME_LIMIT = os.getenv(key='DELETE_ON_TIME_LIMIT', default=False)
 DELETE_ON_SIZE_LIMIT = os.getenv(key='DELETE_ON_SIZE_LIMIT', default=False)
 FORCE_DELETE_ON_SIZE_LIMIT = os.getenv(key='FORCE_DELETE_ON_SIZE_LIMIT', default=False)
 
+# Create an instance of BackgroundScheduler
+scheduler = BackgroundScheduler()
+
 
 # requests___________________________________________________________
 @app.route('/status', methods=["GET"])
 def status():
     print("status")
+    return {
+        "status": "running"
+    }
+
+
+@app.route('/api/start', methods=["GET"])
+def start_scanner():
+    print("Start scanning manually")
+    # scheduler.add_job(start_scan, 'date', next_run_time=datetime.now(), max_instances=1)
+    scheduler.add_job(start_scan, max_instances=1)
     return {
         "status": "running"
     }
@@ -279,7 +292,7 @@ def force_delete_on_size_limit(parent_dir_path, directories_, size_limit):
         delete_directory(i.get("path"), i.get("last_mod"), i.get("readable_size"), "FORCE_DELETE_ON_SIZE_LIMIT")
 
 
-def delete_files_older_then_duration(directories):
+def delete_files_older_then_duration(directories, mode):
     deleted_dirs = []
     for directory in directories:
         last_mod = get_last_modification_time(directory)
@@ -289,7 +302,7 @@ def delete_files_older_then_duration(directories):
             human_readable_size = convert_bytes_to_readable_size(size)
             readable_time = time.ctime(last_mod)
 
-            delete_directory(directory, last_mod, human_readable_size, "DELETE_ON_SIZE_LIMIT")
+            delete_directory(directory, last_mod, human_readable_size, mode)
             deleted_dirs.append(directory)
             print(f"{directory}: update: {readable_time} : size: {human_readable_size}")
     return deleted_dirs
@@ -311,7 +324,7 @@ def scan_dir(dir_path, size_limit_):
     # delete if time limit exceed , no need to worry about DELETE_ON_SIZE_LIMIT and FORCE_DELETE_ON_SIZE_LIMIT
     if DELETE_ON_TIME_LIMIT:
         append_event_logs(f"DELETE_ON_TIME_LIMIT:start scanning:{dir_path}")
-        delete_files_older_then_duration(directories)
+        delete_files_older_then_duration(directories, "DELETE_ON_TIME_LIMIT")
         return
 
     # do nothing if DELETE_ON_SIZE_LIMIT is false
@@ -321,7 +334,7 @@ def scan_dir(dir_path, size_limit_):
     # delete files that older than duration if DELETE_ON_SIZE_LIMIT is true
     if size_exceed and DELETE_ON_SIZE_LIMIT:
         append_event_logs(f"DELETE_ON_SIZE_LIMIT:start scanning:{dir_path}")
-        delete_files_older_then_duration(directories)
+        delete_files_older_then_duration(directories, "DELETE_ON_SIZE_LIMIT")
         return
 
         # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
@@ -467,8 +480,6 @@ def init_background_job():
     print(f"DIR_LIST: {DIR_LIST}")
     print(f"DRY_RUN: {DRY_RUN}")
     print("_" * 10)
-    # Create an instance of BackgroundScheduler
-    scheduler = BackgroundScheduler()
 
     # Schedule the daily_task to run every day at a specific time (e.g., 10:00 AM)
     # scheduler.add_job(start_scan, 'cron', hour=10, minute=0)
@@ -506,7 +517,8 @@ def init_background_job():
 #         if content:
 #
 
+
 if __name__ == '__main__':
     init_background_job()
-    append_event_logs("START_BACKGROUND_JOB")
+    append_event_logs("START_SERVER")
     app.run(use_reloader=False, debug=True, host='0.0.0.0', port=PORT, threaded=True)
