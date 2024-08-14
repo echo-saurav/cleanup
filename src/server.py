@@ -33,6 +33,7 @@ DURATION_DAYS = int(os.getenv(key='DURATION_DAYS', default=30))
 DRY_RUN = os.getenv(key='DRY_RUN', default=True)
 DIR_LIST = os.getenv(key='DIR_LIST', default="")
 SIZE_LIMIT = os.getenv(key='SIZE_LIMIT', default="")
+DELETE_ON_TIME_LIMIT = os.getenv(key='DELETE_ON_TIME_LIMIT', default=False)
 DELETE_ON_SIZE_LIMIT = os.getenv(key='DELETE_ON_SIZE_LIMIT', default=False)
 FORCE_DELETE_ON_SIZE_LIMIT = os.getenv(key='FORCE_DELETE_ON_SIZE_LIMIT', default=False)
 
@@ -306,6 +307,9 @@ def scan_dir(dir_path, size_limit_):
     append_event_logs(f"SCAN:{dir_path} size: {convert_bytes_to_readable_size(directories_size)}")
     append_event_logs(f"SCAN:{dir_path} size limit: {size_limit_}")
     append_event_logs(f"SCAN:{dir_path} size exceed: {size_exceed}")
+
+    # delete if time limit exceed
+
 
     # do nothing if DELETE_ON_SIZE_LIMIT is false
     if size_exceed and not DELETE_ON_SIZE_LIMIT:
