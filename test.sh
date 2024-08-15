@@ -1,6 +1,6 @@
 
 
-curl http://localhost:8888/api/start
+curl http://localhost:8887/api/start
 
 # curl http://localhost:8888/api/dirs
 # curl http://localhost:8888/api/dirs \
