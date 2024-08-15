@@ -302,7 +302,7 @@ def delete_files_older_then_duration(directories, mode):
             human_readable_size = convert_bytes_to_readable_size(size)
             readable_time = convert_timestamp_to_human_readable(last_mod)
 
-            delete_directory(directory, last_mod, human_readable_size, mode)
+            delete_directory(directory, readable_time, human_readable_size, mode)
             deleted_dirs.append(directory)
             print(f"{directory}: update: {readable_time} : size: {human_readable_size}")
     return deleted_dirs
