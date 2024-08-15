@@ -408,7 +408,7 @@ def delete_directory(path, last_mod, human_readable_size, mode):
         if DRY_RUN:
             print(f"Delete dry run: {path}")
         else:
-            # shutil.rmtree(path)
+            shutil.rmtree(path)
             print(f"Directory '{path}' has been deleted successfully.")
         append_delete_logs(path, last_mod, human_readable_size, DRY_RUN, mode)
     except Exception as e:
