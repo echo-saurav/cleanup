@@ -517,13 +517,6 @@ def init_background_job():
     #
 
 
-# def init_data():
-#     with open(DATA_FILE,'w+') as file:
-#         content = file.read()
-#         if content:
-#
-
-
 if __name__ == '__main__':
     init_background_job()
     append_event_logs("START_SERVER")
