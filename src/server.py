@@ -300,7 +300,7 @@ def delete_files_older_then_duration(directories, mode):
             # delete task
             size = get_directory_size(directory)
             human_readable_size = convert_bytes_to_readable_size(size)
-            readable_time = time.ctime(last_mod)
+            readable_time = convert_timestamp_to_human_readable(last_mod)
 
             delete_directory(directory, last_mod, human_readable_size, mode)
             deleted_dirs.append(directory)
@@ -337,7 +337,7 @@ def scan_dir(dir_path, size_limit_):
         delete_files_older_then_duration(directories, "DELETE_ON_SIZE_LIMIT")
         return
 
-        # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
+    # check if anything get delete on DELETE_ON_SIZE_LIMIT because it may not if nothing is older then duration limit
     # delete oldest files if size exceeds even if time duration did not exceed
     if FORCE_DELETE_ON_SIZE_LIMIT and size_exceed:
         append_event_logs(f"FORCE_DELETE_ON_SIZE_LIMIT:start scanning:{dir_path}")
@@ -424,6 +424,12 @@ def get_current_date_human_readable(include_hour=False):
         formatted_date = now.strftime("%d %B %Y")
         formatted_date_time = now.strftime("%d %B %Y %I:%M %p")
         return formatted_date
+
+
+def convert_timestamp_to_human_readable(timestamp):
+    dt_object = datetime.fromtimestamp(timestamp)
+    formatted_date_time = dt_object.strftime("%d %B %Y %I:%M %p")
+    return formatted_date_time
 
 
 def append_delete_logs(path, last_mod, human_readable_size, dry_run, mode):
